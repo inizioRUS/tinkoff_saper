@@ -90,7 +90,7 @@ class Board:
                 while what_check:
                     a = what_check.pop()
                     was.append(a)
-                    if self.cells[a[0]][a[1]].digit == 0:
+                    if self.cells[a[0]][a[1]].digit == 0 and not(self.cells[a[0]][a[1]].flag):
                         for j in self.cells[a[0]][a[1]].give_list_around_object():
                             if j not in what_open:
                                 what_open.append(j)
