@@ -7,6 +7,8 @@ class Board:
         self.w = w
         self.h = h
         self.cells = {}
+        self.bomb_count = bomb_count
+        self.count_flag = 0
         for x in range(w):
             self.cells[x] = {}
         self.open = 0
@@ -66,15 +68,13 @@ class Board:
             if self.cells[x][y].close:
                 self.cells[x][y].flag = 0 if self.cells[x][y].flag else 1
                 self.open += 1 if self.cells[x][y].flag else -1
+                self.count_flag += 1 if self.cells[x][y].flag else -1
                 return True
             else:
                 print("Клетка уже открыта")
                 return True
         elif what_do.lower() == "open":
-            if self.cells[x][y].flag:
-                print("Это флаг")
-                return True
-            elif self.cells[x][y].type == "bomb":
+            if self.cells[x][y].type == "bomb":
                 print("Вы пройграли")
                 return False
             elif not self.cells[x][y].close:
@@ -104,7 +104,7 @@ class Board:
     def check_win(self, flag):
         if not (flag):
             return flag
-        if self.w * self.h == self.open:
+        if self.w * self.h == self.open and self.bomb_count == self.count_flag:
             print("Победа")
             return False
         return True
