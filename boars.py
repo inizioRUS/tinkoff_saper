@@ -24,7 +24,9 @@ class Board:
                 for j in self.cells[x][y].give_list_around_object():
                     self.cells[j[0]][j[1]].digit += 1
         else:
-            for i in data:
+            self.count_flag = int(data[0])
+            self.open = int(data[1])
+            for i in data[2:]:
                 i = i.split("/")
                 objectt = Cell(i[0], int(i[1]), int(i[2]), self.w, self.h)
                 objectt.digit = int(i[3])
@@ -33,7 +35,7 @@ class Board:
                 self.cells[int(i[1])][int(i[2])] = objectt
 
     def save(self, password):
-        s = f"{self.w}/{self.h} "
+        s = f"{self.w}/{self.h}/{self.bomb_count} {self.count_flag} {self.open} "
         for i in list(self.cells.keys()):
             for j in list(self.cells[i].keys()):
                 a = self.cells[i][j]
@@ -90,9 +92,11 @@ class Board:
                 while what_check:
                     a = what_check.pop()
                     was.append(a)
-                    if self.cells[a[0]][a[1]].digit == 0 and not(self.cells[a[0]][a[1]].flag):
+                    if self.cells[a[0]][a[1]].digit == 0 and not (self.cells[a[0]][a[1]].flag) and self.cells[a[0]][
+                        a[1]].close:
                         for j in self.cells[a[0]][a[1]].give_list_around_object():
-                            if j not in what_open:
+                            if j not in what_open and not (self.cells[j[0]][j[1]].flag) and self.cells[j[0]][
+                                j[1]].close:
                                 what_open.append(j)
                             if j not in was:
                                 what_check.append(j)
@@ -102,6 +106,7 @@ class Board:
                 return True
 
     def check_win(self, flag):
+        print(self.bomb_count, self.count_flag, self.open)
         if not (flag):
             return flag
         if self.w * self.h == self.open and self.bomb_count == self.count_flag:

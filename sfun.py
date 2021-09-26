@@ -41,7 +41,7 @@ def open_file(args, main_password):
         if a[-1] != "tisgfd":
             return "не правильный файл", False
         a = a[:-1]
-        return "игра началась", True, Board(int(a[0].split("/")[0]), int(a[0].split("/")[1]), 0, False, a[1:])
+        return "игра началась", True, Board(int(a[0].split("/")[0]), int(a[0].split("/")[1]), int(a[0].split("/")[2]), False, a[1:])
     except Exception as e:
         return ["ошибка", False]
 
